@@ -1,0 +1,43 @@
+body {
+    background-color: darkgreen;
+    text-align: center;
+}
+
+#grid {
+    width: 515px;
+    height: 515px;
+    margin: 0 auto;
+    line-height: 0;
+}
+
+.square {
+    width: calc(12.5% - 6px);
+    height: calc(12.5% - 6px);
+    border: 3px solid black;
+    display: inline-flex;
+    float: left;
+    justify-content: center;
+    align-items: center;
+}
+
+.piece {
+    border-radius: 50%;
+    width: 80%;
+    height: 80%;
+}
+
+.white {
+    background-color: white;
+}
+
+.red {
+    background-color: red;
+}
+
+.black {
+    background-color: black;
+}
+
+.selected {
+    background-color: yellow;
+}
