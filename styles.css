@@ -41,3 +41,21 @@ body {
 .selected {
     background-color: yellow;
 }
+
+.turn-black {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 5px 10px;
+}
+
+.turn-white {
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 5px 10px;
+}
