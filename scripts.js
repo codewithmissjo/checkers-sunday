@@ -1,3 +1,4 @@
+// create a variable to keep track of a selected piece, because relying on the html is UNreliable.
 var selected;
 
 $(document).ready(function(){
@@ -28,16 +29,18 @@ $(document).ready(function(){
         if ( $(this).hasClass( turn ) ) {
             $('.selected').removeClass("selected");
             selected = $(this);
+            // line 31 might not be working for Vibha
             moveChecker();
-            $(this).addClass("selected");
+            // $(this).addClass("selected");
         }
     });
 
+    // change $('.selected') to selected (variable) for reasons!
     // click for red squares that are EMPTY
     // cannot put multiple pieces into a square
     $('.square.red').on("click", function(){
-        if ( $('.selected').length > 0 && $(this).children().length == 0 ) {
-            $(this).append( $('.selected') );
+        if ( selected != undefined && selected.length > 0 && $(this).children().length == 0 ) {
+            $(this).append( selected );
             $('.selected').removeClass("selected");
             changeTurn();
         }
@@ -62,14 +65,24 @@ function moveChecker() {
         if yes, highlight!
         if no, do nothing.
     */
+    // ternary conditional statement (just for fun!)
+    let t = $('#turn').html()[0] == "b" ? 1 : -1;
     let prow = parseInt(selected.parent().attr("id")[0]);
     let pcol = parseInt(selected.parent().attr("id")[1]);
     
     // 1 row down 1 col left
-    $(`#${prow + 1}${pcol - 1}`).addClass('selected');
+    if ( $(`#${prow + t}${pcol - 1}`).children().length == 0 ) {
+        $(`#${prow + t}${pcol - 1}`).addClass('selected');
+    }
 
     // 1 row down 1 col right
-    $(`#${prow + 1}${pcol + 1}`).addClass('selected');
+    if ( $(`#${prow + t}${pcol + 1}`).children().length == 0 ) {
+        $(`#${prow + t}${pcol + 1}`).addClass('selected');
+    }
+
+    if ( $('.selected').length > 0 ) {
+        selected.addClass('selected');
+    }
     
 }
 
