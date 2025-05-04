@@ -3,6 +3,10 @@ body {
     text-align: center;
 }
 
+div {
+    box-sizing: border-box;
+}
+
 #grid {
     width: 515px;
     height: 515px;
@@ -69,10 +73,31 @@ body {
     padding: 5px 10px;
 }
 
+.king {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .king::after {
-    content: 'K';
+    content: '';
     color: white;
     font-weight: bold;
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 80%;
+    border: 2px solid white;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('crown-white.svg');
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position: 50%;;
+}
+
+.white.king::after {
+    color: black;
+    border-color: black;
+    background-image: url('crown-black.svg');
 }

@@ -15,7 +15,7 @@ $(document).ready(function(){
 
                 // add the piece
                 if ( r < 3 ) {
-                    $(`#${r}${c}`).append("<div class='piece black king'></div>")
+                    $(`#${r}${c}`).append("<div class='piece black'></div>")
                 } else if ( r > 4 ) {
                     $(`#${r}${c}`).append("<div class='piece white'></div>")
                 }
@@ -65,6 +65,12 @@ $(document).ready(function(){
                 $('.jump').removeClass('jump');
             }
 
+            //if the piece is black and the row is 7, add the king class to the piece.
+            //if the piece is white and the row is 0, add the king class to the piece.
+            if ( ($('#turn').html() == "black" && parseInt($(this).attr('id')[0]) == 7) || ($('#turn').html() == "white" && parseInt($(this).attr('id')[0]) == 0) ) {
+                selected.addClass('king');
+            }
+
             selected = undefined;
             changeTurn();
         }
@@ -95,7 +101,7 @@ function moveChecker() {
     let prow = parseInt(selected.parent().attr("id")[0]);
     let pcol = parseInt(selected.parent().attr("id")[1]);
     
-    // 1 row down 1 col left
+    // 1 row down/up 1 col left
     if ( $(`#${prow + t}${pcol - 1}`).children().length == 0 ) {
         $(`#${prow + t}${pcol - 1}`).addClass('selected');
     } else if ( ! $(`#${prow + t}${pcol - 1}`).children().hasClass($('#turn').html()) ) {
@@ -106,7 +112,7 @@ function moveChecker() {
         }
     }
 
-    // 1 row down 1 col right
+    // 1 row down/up 1 col right
     if ( $(`#${prow + t}${pcol + 1}`).children().length == 0 ) {
         $(`#${prow + t}${pcol + 1}`).addClass('selected');
     } else if ( ! $(`#${prow + t}${pcol + 1}`).children().hasClass($('#turn').html()) ) {
