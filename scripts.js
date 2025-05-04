@@ -15,7 +15,7 @@ $(document).ready(function(){
 
                 // add the piece
                 if ( r < 3 ) {
-                    $(`#${r}${c}`).append("<div class='piece black'></div>")
+                    $(`#${r}${c}`).append("<div class='piece black king'></div>")
                 } else if ( r > 4 ) {
                     $(`#${r}${c}`).append("<div class='piece white'></div>")
                 }
@@ -29,7 +29,7 @@ $(document).ready(function(){
         if ( $(this).hasClass( turn ) ) {
             $('.selected').removeClass("selected");
             selected = $(this);
-            // line 31 might not be working for Vibha
+            
             moveChecker();
             // $(this).addClass("selected");
         }
@@ -39,9 +39,33 @@ $(document).ready(function(){
     // click for red squares that are EMPTY
     // cannot put multiple pieces into a square
     $('.square.red').on("click", function(){
-        if ( selected != undefined && selected.length > 0 && $(this).children().length == 0 ) {
+        if ( selected != undefined && selected.length > 0 && $(this).children().length == 0 && $(this).hasClass('selected') ) {
             $(this).append( selected );
             $('.selected').removeClass("selected");
+
+            // How can we know if the move that was JUST made was a jump
+            if ( $(this).hasClass('jump') ) {
+                // WHICH PIECE to remove
+                let t = $('#turn').html()[0] == "b" ? -1 : 1;
+                let jrow = parseInt($(this).attr('id')[0]) + t;
+                let jcol = 0;
+                if ( $(this).hasClass('jump-left') ) {
+                    jcol = parseInt($(this).attr('id')[1]) + 1;
+                } else if ( $(this).hasClass('jump-right') ) {
+                    jcol = parseInt($(this).attr('id')[1]) - 1;
+                }
+                let PIECE = $(`#${jrow}${jcol}`).children();
+
+                // How to move a piece, where to move it to;
+                $('#score').append(PIECE);
+
+                // RESET
+                $('.jump-right').removeClass('jump-right');
+                $('.jump-left').removeClass('jump-left');
+                $('.jump').removeClass('jump');
+            }
+
+            selected = undefined;
             changeTurn();
         }
     });
@@ -67,21 +91,37 @@ function moveChecker() {
     */
     // ternary conditional statement (just for fun!)
     let t = $('#turn').html()[0] == "b" ? 1 : -1;
+
     let prow = parseInt(selected.parent().attr("id")[0]);
     let pcol = parseInt(selected.parent().attr("id")[1]);
     
     // 1 row down 1 col left
     if ( $(`#${prow + t}${pcol - 1}`).children().length == 0 ) {
         $(`#${prow + t}${pcol - 1}`).addClass('selected');
+    } else if ( ! $(`#${prow + t}${pcol - 1}`).children().hasClass($('#turn').html()) ) {
+        if ( $(`#${prow + (t * 2)}${pcol - 2}`).children().length == 0 ) {
+            $(`#${prow + (t * 2)}${pcol - 2}`).addClass('selected');
+            $(`#${prow + (t * 2)}${pcol - 2}`).addClass('jump');
+            $(`#${prow + (t * 2)}${pcol - 2}`).addClass('jump-left');
+        }
     }
 
     // 1 row down 1 col right
     if ( $(`#${prow + t}${pcol + 1}`).children().length == 0 ) {
         $(`#${prow + t}${pcol + 1}`).addClass('selected');
+    } else if ( ! $(`#${prow + t}${pcol + 1}`).children().hasClass($('#turn').html()) ) {
+        if ( $(`#${prow + (t * 2)}${pcol + 2}`).children().length == 0 ) {
+            $(`#${prow + (t * 2)}${pcol + 2}`).addClass('selected');
+            $(`#${prow + (t * 2)}${pcol + 2}`).addClass('jump');
+            $(`#${prow + (t * 2)}${pcol + 2}`).addClass('jump-right');
+        }
     }
 
+    // if there ARE highlighted squares to move to, then highlight the piece that can be moved.
     if ( $('.selected').length > 0 ) {
         selected.addClass('selected');
+    } else {
+        selected = undefined;
     }
     
 }
