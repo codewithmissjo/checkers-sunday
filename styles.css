@@ -93,7 +93,7 @@ div {
     background-image: url('crown-white.svg');
     background-repeat: no-repeat;
     background-size: 75%;
-    background-position: 50%;;
+    background-position: 50%;
 }
 
 .white.king::after {
