@@ -91,41 +91,42 @@ function changeTurn() {
 
 function moveChecker() {
     if ( selected.hasClass("king") ) {
+        let prow = parseInt(selected.parent().attr("id")[0]);
+        let pcol = parseInt(selected.parent().attr("id")[1]);
+
+        /*
+        +-
+        ++
+        -+
+        --
+        */
        let directions = [
-        [+1, -1],// black
-        [+1, +1],// black
-        [-1, -1],// white
-        [-1, +1]// white
+        [ 1, -1 ],
+        [ 1, 1 ]
        ]
 
-       // -1 for valid move
-       // 0 is opponent
-        // 1 is current
-       for ( let d = 0; d < directions.length; d++ ) {
-        let a = tryMove(directions[d][0], directions[d][1]);
-        if ( a == 0 ) {
-            let b = tryMove(directions[d][0] * 2, directions[d][1] * 2);
-            if ( b == -1 ) {
-                isJumpStuff(directions[d][0] * 2, directions[d][1] * 2);
-            }
-        }
-       }
-
-        /* Don't Repeat Yourself */
-
-    /*
         // 1 row down(+) 1 col left(-)
-        tryMove(+1, -1);
+        if ( $(`#${prow + 1}${pcol - 1}`).children().length == 0 ) {
+            $(`#${prow + 1}${pcol - 1}`).addClass('selected');
+        }
+
+        tryMove(1, -1);
 
         // 1 row down(+) 1 col right(+)
-        tryMove(1, 1);
+        if ( $(`#${prow + 1}${pcol + 1}`).children().length == 0 ) {
+            $(`#${prow + 1}${pcol + 1}`).addClass('selected');
+        }
 
         // 1 row up(-) 1 col left(-)
-        tryMove(-1, -1);
+        if ( $(`#${prow - 1}${pcol - 1}`).children().length == 0 ) {
+            $(`#${prow - 1}${pcol - 1}`).addClass('selected');
+        }
 
         // 1 row up(-) 1 col right(+)
-        tryMove(-1, 1);
-*/
+        if ( $(`#${prow - 1}${pcol + 1}`).children().length == 0 ) {
+            $(`#${prow - 1}${pcol + 1}`).addClass('selected');
+        }
+
     } else {
         // does this piece have squares it can move to?
         /*
@@ -177,24 +178,5 @@ function tryMove(row, col) {
 
     if (corner.children().length == 0) {
         corner.addClass('selected');
-        return -1;
-    } else {
-        return corner.children().hasClass($('#turn').html());
-        // 0 is opponent
-        // 1 is current
-    }
-}
-
-function isJumpStuff(row, col) {
-    let prow = parseInt(selected.parent().attr("id")[0]);
-    let pcol = parseInt(selected.parent().attr("id")[1]);
-    const corner = $(`#${prow + row}${pcol + col}`);
-
-    corner.addClass('selected');
-    corner.addClass('jump');
-    if ( col > 0 ) {
-        corner.addClass('jump-right');
-    } else {
-        corner.addClass('jump-left');
     }
 }
